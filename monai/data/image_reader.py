@@ -1611,6 +1611,13 @@ class NrrdReader(ImageReader):
         origin = img.header["space origin"]
 
         x, y = direction.shape
+        # labels have none in the first row
+        # in case of 4x4 matrix, the first row is always [nan, nan, nan, nan]
+        if x == 4 and np.isnan(direction[0]).all():  # 4x4 matrix
+            affine = np.eye(x)
+            affine[:3, :3] = direction[1:, :]
+            affine[:3, -1] = origin
+            return affine
         affine_diam = min(x, y) + 1
         affine: np.ndarray = np.eye(affine_diam)
         affine[:x, :y] = direction

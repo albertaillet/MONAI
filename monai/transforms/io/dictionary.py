@@ -157,7 +157,10 @@ class LoadImaged(MapTransform):
             else:
                 if not isinstance(data, (tuple, list)):
                     raise ValueError("loader must return a tuple or list (because image_only=False was used).")
-                d[key] = data[0]
+                if key == "label":
+                    d[key] = data[0].argmax(0, keepdims=True)
+                else:
+                    d[key] = data[0]
                 if not isinstance(data[1], dict):
                     raise ValueError("metadata must be a dict.")
                 meta_key = meta_key or f"{key}_{meta_key_postfix}"
