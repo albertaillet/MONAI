@@ -158,7 +158,7 @@ class LoadImaged(MapTransform):
                 if not isinstance(data, (tuple, list)):
                     raise ValueError("loader must return a tuple or list (because image_only=False was used).")
                 if key == "label":
-                    d[key] = data[0].argmax(0, keepdims=True)
+                    d[key] = data[0].argmax(0, keepdims=False)
                 else:
                     d[key] = data[0]
                 if not isinstance(data[1], dict):
