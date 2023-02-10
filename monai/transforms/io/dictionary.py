@@ -158,7 +158,10 @@ class LoadImaged(MapTransform):
                 if not isinstance(data, (tuple, list)):
                     raise ValueError("loader must return a tuple or list (because image_only=False was used).")
                 if key == "label":
-                    d[key] = data[0].argmax(0, keepdims=False)
+                    from torch import zeros, concatenate
+                    shape = data[0][0].shape
+                    background = zeros((1, *shape), dtype=data[0].dtype)  # shape: (1, C, H, W, D)
+                    d[key] = concatenate((background, data[0]), axis=0).argmax(axis=0)  # shape: (C, H, W, D)
                 else:
                     d[key] = data[0]
                 if not isinstance(data[1], dict):
