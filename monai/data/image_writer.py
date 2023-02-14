@@ -463,7 +463,7 @@ class ITKWriter(ImageWriter):
             **kwargs,
         )
         itk.imwrite(
-            self.data_obj, filename, compression=kwargs.pop("compression", False), imageio=kwargs.pop("imageio", None)
+            self.data_obj, filename, compression=kwargs.pop("compression", True), imageio=kwargs.pop("imageio", None)
         )
 
     @classmethod
