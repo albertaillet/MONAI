@@ -324,7 +324,7 @@ class SpatialResample(InvertibleTransform):
     def inverse(self, data: torch.Tensor) -> torch.Tensor:
         transform = self.pop_transform(data)
         # Create inverse transform
-        kw_args = transform[TraceKeys.EXTRA_INFO]
+        kw_args = deepcopy(transform[TraceKeys.EXTRA_INFO])
         # need to convert dtype from string back to torch.dtype
         kw_args["dtype"] = get_torch_dtype_from_string(kw_args["dtype"])
         # source becomes destination
